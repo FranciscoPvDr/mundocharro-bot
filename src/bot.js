@@ -3,8 +3,8 @@
 //   Flujo actualizado por RRHH v2
 // =============================================
 
-const { ESTADOS, obtenerSesion, actualizarSesion } = require("./sesiones");
-const { generarPreguntas, evaluarCandidato } = require("./evaluador");
+const crypto = require("crypto");
+const { ESTADOS, MODO, obtenerSesion, actualizarSesion } = require("./sesiones");
 const { obtenerVacantes, buscarVacante, formatearListaVacantes } = require("./vacantes");
 
 // ─── MENSAJES ──────────────────────────────────────────────────────
@@ -144,8 +144,36 @@ Si tienes dudas, puedes escribirnos aquí.
 
 ¡Te deseamos mucho éxito! 🤠`,
 
+  handoffHumano: (casoId) => `✅ Entendido. Pronto se unirá alguien del equipo a esta conversación.
+
+🧾 *Número de caso:* ${casoId}
+
+Mientras tanto, puedes escribir aquí los detalles. Si necesitas volver al menú automático, escribe *Hola*.`,
+
   errorOpcion: `❌ No entendí tu respuesta. Por favor elige una opción válida escribiendo el número correspondiente.`,
 };
+
+function generarCasoId() {
+  return String(crypto.randomInt(100_000_000, 1_000_000_000));
+}
+
+function registrarHandoffHumano(telefono, sesion, area) {
+  const casoId = generarCasoId();
+  const datos = {
+    ...sesion.datos,
+    casoId,
+    casoArea: area,
+    casoAbiertoEn: new Date().toISOString(),
+  };
+
+  console.log(`\n🧑‍💼 HANDOFF A HUMANO:`);
+  console.log(`   Caso: ${casoId}`);
+  console.log(`   Área: ${area}`);
+  console.log(`   Estado bot: ${sesion.estado}`);
+  console.log(`   Teléfono: ${telefono}\n`);
+
+  return datos;
+}
 
 // ─── PROCESADOR PRINCIPAL ──────────────────────────────────────────
 async function procesarMensaje(telefono, mensaje) {
@@ -155,8 +183,13 @@ async function procesarMensaje(telefono, mensaje) {
 
   // Reinicio en cualquier momento
   if (texto === "hola" || texto === "inicio" || texto === "reiniciar") {
-    actualizarSesion(telefono, { estado: ESTADOS.INICIO, datos: {}, respuestasEval: [] });
+    actualizarSesion(telefono, { estado: ESTADOS.INICIO, modo: MODO.BOT, datos: {}, respuestasEval: [] });
     return MSG.bienvenida;
+  }
+
+  // Durante soporte humano, el bot no interviene (misma conversación; responde el humano desde la línea oficial)
+  if (sesion.modo === MODO.HUMANO) {
+    return null;
   }
 
   switch (sesion.estado) {
@@ -173,7 +206,7 @@ async function procesarMensaje(telefono, mensaje) {
     case ESTADOS.MENU_PRINCIPAL:
       switch (texto) {
         case "1":
-          actualizarSesion(telefono, { estado: ESTADOS.COLABORADOR });
+          actualizarSesion(telefono, { estado: ESTADOS.COLABORADOR_ESPERA_CONTACTO });
           return MSG.colaborador;
         case "2":
           actualizarSesion(telefono, { estado: ESTADOS.PRACTICAS_MENU });
@@ -189,15 +222,22 @@ async function procesarMensaje(telefono, mensaje) {
       }
 
     // ─── COLABORADOR ───────────────────────────────────────────────
-    case ESTADOS.COLABORADOR:
-      actualizarSesion(telefono, { estado: ESTADOS.FIN });
-      return MSG.cierre;
+    case ESTADOS.COLABORADOR_ESPERA_CONTACTO:
+      if (texto === "contactar") {
+        const datos = registrarHandoffHumano(telefono, sesion, "Atención GT");
+        actualizarSesion(telefono, { modo: MODO.HUMANO, estado: ESTADOS.FIN, datos });
+        return MSG.handoffHumano(datos.casoId);
+      }
+      return (
+        `Para canalizarte con un agente, escribe la palabra *contactar*.\n\n` +
+        `Si quieres reiniciar, escribe *Hola*.`
+      );
 
     // ─── PRÁCTICAS ─────────────────────────────────────────────────
     case ESTADOS.PRACTICAS_MENU:
       switch (texto) {
         case "1":
-          actualizarSesion(telefono, { estado: ESTADOS.FIN });
+          actualizarSesion(telefono, { estado: ESTADOS.PRACTICAS_INFO });
           return MSG.practicasInfo;
         case "2":
           actualizarSesion(telefono, { estado: ESTADOS.FIN });
@@ -205,6 +245,14 @@ async function procesarMensaje(telefono, mensaje) {
         default:
           return MSG.errorOpcion + "\n\n" + MSG.practicasMenu;
       }
+
+    case ESTADOS.PRACTICAS_INFO:
+      if (texto === "contactar") {
+        const datos = registrarHandoffHumano(telefono, sesion, "Vinculación");
+        actualizarSesion(telefono, { modo: MODO.HUMANO, estado: ESTADOS.FIN, datos });
+        return MSG.handoffHumano(datos.casoId);
+      }
+      return `Si quieres que te contacte *Vinculación*, escribe *contactar*.\n\nSi quieres reiniciar, escribe *Hola*.`;
 
     // ─── SOLO INFO ─────────────────────────────────────────────────
     case ESTADOS.SOLO_INFO:

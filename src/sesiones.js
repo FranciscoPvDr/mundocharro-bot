@@ -9,6 +9,9 @@ const ESTADOS = {
   // Colaborador
   COLABORADOR: "COLABORADOR",
 
+  /** Espera a que el colaborador escriba *contactar* (o reinicie con Hola) */
+  COLABORADOR_ESPERA_CONTACTO: "COLABORADOR_ESPERA_CONTACTO",
+
   // Prácticas
   PRACTICAS_MENU: "PRACTICAS_MENU",
 
@@ -35,12 +38,19 @@ const ESTADOS = {
   FIN: "FIN",
 };
 
+/** Bot automático vs. soporte humano (misma conversación en WhatsApp) */
+const MODO = {
+  BOT: "BOT",
+  HUMANO: "HUMANO",
+};
+
 const sesiones = new Map();
 
 function obtenerSesion(telefono) {
   if (!sesiones.has(telefono)) {
     sesiones.set(telefono, {
       estado: ESTADOS.INICIO,
+      modo: MODO.BOT,
       datos: {},
       respuestasEval: [],
     });
@@ -57,4 +67,4 @@ function eliminarSesion(telefono) {
   sesiones.delete(telefono);
 }
 
-module.exports = { ESTADOS, obtenerSesion, actualizarSesion, eliminarSesion };
+module.exports = { ESTADOS, MODO, obtenerSesion, actualizarSesion, eliminarSesion };

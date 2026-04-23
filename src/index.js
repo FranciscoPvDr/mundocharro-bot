@@ -51,12 +51,18 @@ app.post("/webhook", async (req, res) => {
     if (mensaje.type !== "text") return;
 
     const telefono = mensaje.from; // Ej: 5217713900155
-const telefonoMeta = telefono.replace(/^521/, '52'); // Convierte 5217... a 527...
+    const telefonoMeta = telefono.replace(/^521/, "52"); // Convierte 5217... a 527...
     const textoEntrante = mensaje.text.body;
 
     console.log(`📩 [${telefono}]: ${textoEntrante}`);
 
     const respuesta = await procesarMensaje(telefono, textoEntrante);
+
+    // `null` = silencio del bot (ej. soporte humano en curso)
+    if (!respuesta) {
+      console.log(`🤫 [Bot silenciado → ${telefonoMeta}] (sin respuesta automática)`);
+      return;
+    }
 
     await enviarMensaje(telefonoMeta, respuesta);
 
