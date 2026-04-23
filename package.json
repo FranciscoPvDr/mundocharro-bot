@@ -1,0 +1,21 @@
+{
+  "name": "mundocharro-bot",
+  "version": "1.0.0",
+  "description": "Chatbot de WhatsApp para RRHH - Mundo Charro",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.20.0",
+    "@google/generative-ai": "^0.24.1",
+    "dotenv": "^16.0.0",
+    "express": "^4.18.0",
+    "googleapis": "^171.4.0",
+    "twilio": "^4.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.0"
+  }
+}

@@ -1,0 +1,674 @@
+Intervalo: 30s
+
+C:\Users\FranciscoPavana\OneDrive - Mundo Charro\Downloads\sensor.py:103: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "timestamp": datetime.utcnow().isoformat()
+[17:42:42] Sin conexión al servidor — reintentando en 30s
+[17:43:14] Sin conexión al servidor — reintentando en 30s
+[17:43:46] Sin conexión al servidor — reintentando en 30s
+[17:44:19] Sin conexión al servidor — reintentando en 30s
+[17:44:51] Sin conexión al servidor — reintentando en 30s
+Traceback (most recent call last):
+  File "C:\Users\FranciscoPavana\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\util\connection.py", line 73, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [WinError 10061] No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\FranciscoPavana\OneDrive - Mundo Charro\Downloads\sensor.py", line 134, in <module>
+    main()
+  File "C:\Users\FranciscoPavana\OneDrive - Mundo Charro\Downloads\sensor.py", line 129, in main
+    send_ping(device_id, ip, ssid, dentro)
+  File "C:\Users\FranciscoPavana\OneDrive - Mundo Charro\Downloads\sensor.py", line 106, in send_ping
+    resp = requests.post(
+           ^^^^^^^^^^^^^^
+  File "C:\Users\FranciscoPavana\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\api.py", line 115, in post
+    return request("post", url, data=data, json=json, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\FranciscoPavana\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\FranciscoPavana\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\sessions.py", line 592, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\FranciscoPavana\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\sessions.py", line 706, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\FranciscoPavana\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\adapters.py", line 645, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "C:\Users\FranciscoPavana\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+               ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\FranciscoPavana\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 493, in _make_request
+    conn.request(
+  File "C:\Users\FranciscoPavana\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connection.py", line 500, in request
+    self.endheaders()
+  File "C:\Users\FranciscoPavana\AppData\Local\Programs\Python\Python312\Lib\http\client.py", line 1333, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "C:\Users\FranciscoPavana\AppData\Local\Programs\Python\Python312\Lib\http\client.py", line 1093, in _send_output
+    self.send(msg)
+  File "C:\Users\FranciscoPavana\AppData\Local\Programs\Python\Python312\Lib\http\client.py", line 1037, in send
+    self.connect()
+  File "C:\Users\FranciscoPavana\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connection.py", line 331, in connect
+    self.sock = self._new_conn()
+                ^^^^^^^^^^^^^^^^
+  File "C:\Users\FranciscoPavana\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connection.py", line 204, in _new_conn
+    sock = connection.create_connection(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\FranciscoPavana\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\util\connection.py", line 81, in create_connection
+    sock.close()
+  File "C:\Users\FranciscoPavana\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 501, in close
+    def close(self):
+
+KeyboardInterrupt
+^C
+C:\Users\FranciscoPavana\OneDrive - Mundo Charro\Downloads>pip install fastapi uvicorn sqlalchemy
+Fatal error in launcher: Unable to create process using '"e:\biotime 8.0\biotime\django_python15\python27\python.exe"  "C:\BioTime\Python27\Scripts\pip.exe" install fastapi uvicorn sqlalchemy'
+
+C:\Users\FranciscoPavana\OneDrive - Mundo Charro\Downloads>py pip install fastapi uvicorn sqlalchemy
+C:\Users\FranciscoPavana\AppData\Local\Python\pythoncore-3.14-64\python.exe: can't open file 'C:\\Users\\FranciscoPavana\\OneDrive - Mundo Charro\\Downloads\\pip': [Errno 2] No such file or directory
+
+C:\Users\FranciscoPavana\OneDrive - Mundo Charro\Downloads>py -3.12 -m pip install fastapi uvicorn sqlalchemy
+Collecting fastapi
+  Downloading fastapi-0.135.3-py3-none-any.whl.metadata (28 kB)
+Collecting uvicorn
+  Downloading uvicorn-0.44.0-py3-none-any.whl.metadata (6.7 kB)
+Collecting sqlalchemy
+  Downloading sqlalchemy-2.0.49-cp312-cp312-win_amd64.whl.metadata (9.8 kB)
+Collecting starlette>=0.46.0 (from fastapi)
+  Downloading starlette-1.0.0-py3-none-any.whl.metadata (6.3 kB)
+Collecting pydantic>=2.9.0 (from fastapi)
+  Downloading pydantic-2.12.5-py3-none-any.whl.metadata (90 kB)
+Collecting typing-extensions>=4.8.0 (from fastapi)
+  Downloading typing_extensions-4.15.0-py3-none-any.whl.metadata (3.3 kB)
+Collecting typing-inspection>=0.4.2 (from fastapi)
+  Downloading typing_inspection-0.4.2-py3-none-any.whl.metadata (2.6 kB)
+Collecting annotated-doc>=0.0.2 (from fastapi)
+  Downloading annotated_doc-0.0.4-py3-none-any.whl.metadata (6.6 kB)
+Collecting click>=7.0 (from uvicorn)
+  Downloading click-8.3.2-py3-none-any.whl.metadata (2.6 kB)
+Collecting h11>=0.8 (from uvicorn)
+  Using cached h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+Collecting greenlet>=1 (from sqlalchemy)
+  Downloading greenlet-3.3.2-cp312-cp312-win_amd64.whl.metadata (3.8 kB)
+Collecting colorama (from click>=7.0->uvicorn)
+  Using cached colorama-0.4.6-py2.py3-none-any.whl.metadata (17 kB)
+Collecting annotated-types>=0.6.0 (from pydantic>=2.9.0->fastapi)
+  Downloading annotated_types-0.7.0-py3-none-any.whl.metadata (15 kB)
+Collecting pydantic-core==2.41.5 (from pydantic>=2.9.0->fastapi)
+  Downloading pydantic_core-2.41.5-cp312-cp312-win_amd64.whl.metadata (7.4 kB)
+Collecting anyio<5,>=3.6.2 (from starlette>=0.46.0->fastapi)
+  Downloading anyio-4.13.0-py3-none-any.whl.metadata (4.5 kB)
+Requirement already satisfied: idna>=2.8 in c:\users\franciscopavana\appdata\local\programs\python\python312\lib\site-packages (from anyio<5,>=3.6.2->starlette>=0.46.0->fastapi) (3.11)
+Downloading fastapi-0.135.3-py3-none-any.whl (117 kB)
+Downloading uvicorn-0.44.0-py3-none-any.whl (69 kB)
+Downloading sqlalchemy-2.0.49-cp312-cp312-win_amd64.whl (2.1 MB)
+   ---------------------------------------- 2.1/2.1 MB 555.1 kB/s eta 0:00:00
+Downloading annotated_doc-0.0.4-py3-none-any.whl (5.3 kB)
+Downloading click-8.3.2-py3-none-any.whl (108 kB)
+Downloading greenlet-3.3.2-cp312-cp312-win_amd64.whl (231 kB)
+Using cached h11-0.16.0-py3-none-any.whl (37 kB)
+Downloading pydantic-2.12.5-py3-none-any.whl (463 kB)
+Downloading pydantic_core-2.41.5-cp312-cp312-win_amd64.whl (2.0 MB)
+   ---------------------------------------- 2.0/2.0 MB 1.1 MB/s eta 0:00:00
+Downloading starlette-1.0.0-py3-none-any.whl (72 kB)
+Downloading typing_extensions-4.15.0-py3-none-any.whl (44 kB)
+Downloading typing_inspection-0.4.2-py3-none-any.whl (14 kB)
+Downloading annotated_types-0.7.0-py3-none-any.whl (13 kB)
+Downloading anyio-4.13.0-py3-none-any.whl (114 kB)
+Using cached colorama-0.4.6-py2.py3-none-any.whl (25 kB)
+Installing collected packages: typing-extensions, h11, greenlet, colorama, annotated-types, annotated-doc, typing-inspection, sqlalchemy, pydantic-core, click, anyio, uvicorn, starlette, pydantic, fastapi
+  WARNING: The script uvicorn.exe is installed in 'C:\Users\FranciscoPavana\AppData\Local\Programs\Python\Python312\Scripts' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+
+
+
+
+
+
+
+
+C:\Users\FranciscoPavana\OneDrive - Mundo Charro\Downloads>py -3.12 sensor.py
+Sensor iniciado — Device ID: 21d043df-4626-4d5e-8068-ac739c2477d3
+Servidor: http://192.168.80.138:8000
+Intervalo: 30s
+
+C:\Users\FranciscoPavana\OneDrive - Mundo Charro\Downloads\sensor.py:103: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "timestamp": datetime.utcnow().isoformat()
+[15:47:49] DENTRO  ✓ | IP: 192.168.80.138 | SSID: Mundo Charro Tecnologias | HTTP 200
+Traceback (most recent call last):
+  File "C:\Users\FranciscoPavana\OneDrive - Mundo Charro\Downloads\sensor.py", line 134, in <module>
+    main()
+  File "C:\Users\FranciscoPavana\OneDrive - Mundo Charro\Downloads\sensor.py", line 130, in main
+    time.sleep(PING_INTERVAL)
+KeyboardInterrupt
+^C
+C:\Users\FranciscoPavana\OneDrive - Mundo Charro\Downloads>py -3.12 sensor.py
+Sensor iniciado — Device ID: 21d043df-4626-4d5e-8068-ac739c2477d3
+Servidor: http://192.168.80.138:8000
+Intervalo: 30s
+
+C:\Users\FranciscoPavana\OneDrive - Mundo Charro\Downloads\sensor.py:103: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "timestamp": datetime.utcnow().isoformat()
+[15:49:03] DENTRO  ✓ | IP: 192.168.80.138 | SSID: Mundo Charro Tecnologias | HTTP 200
+[15:49:33] DENTRO  ✓ | IP: 192.168.80.138 | SSID: Mundo Charro Tecnologias | HTTP 200
+Traceback (most recent call last):
+  File "C:\Users\FranciscoPavana\OneDrive - Mundo Charro\Downloads\sensor.py", line 134, in <module>
+    main()
+  File "C:\Users\FranciscoPavana\OneDrive - Mundo Charro\Downloads\sensor.py", line 130, in main
+    time.sleep(PING_INTERVAL)
+KeyboardInterrupt
+^C
+C:\Users\FranciscoPavana\OneDrive - Mundo Charro\Downloads>py -3.12 sensor.py
+Sensor iniciado — Device ID: 21d043df-4626-4d5e-8068-ac739c2477d3
+Servidor: http://192.168.80.138:8000
+Intervalo: 30s
+
+
+
+
+
+
+C:\Users\FranciscoPavana\OneDrive - Mundo Charro\Documentos\Proyecto Chatbot\mundocharro-bot\mundocharro-bot>node test-sheets.js
+
+
+
+> node src/index.js
+
+
+🤠 ========================================
+   MUNDO CHARRO - BOT DE RRHH
+   Servidor corriendo en puerto 3000
+   Webhook: http://localhost:3000/webhook
+   Plataforma: Meta WhatsApp Cloud API
+========================================
+
+📩 [5217713900155]: Hola
+❌ Error en webhook: {
+  error: {
+    message: 'Error validating access token: Session has expired on Monday, 13-Apr-26 16:00:00 PDT. The current time is Monday, 13-Apr-26 16:04:20 PDT.',
+    type: 'OAuthException',
+    code: 190,
+    error_subcode: 463,
+    fbtrace_id: 'AMNcUVB8GDdOW5e44ucdCBV'
+  }
+}
+^C¿Desea terminar el trabajo por lotes (S/N)? npm start
+^C
+C:\Users\FranciscoPavana\OneDrive - Mundo Charro\Documentos\Proyecto Chatbot\mundocharro-bot\mundocharro-bot>npm start
+
+> mundocharro-bot@1.0.0 start
+> node src/index.js
+
+
+🤠 ========================================
+   MUNDO CHARRO - BOT DE RRHH
+   Servidor corriendo en puerto 3000
+   Webhook: http://localhost:3000/webhook
+   Plataforma: Meta WhatsApp Cloud API
+========================================
+
+📩 [5217713900155]: Hola
+📤 [Bot → 527713900155]: 👋 ¡Hola! Bienvenido/a a *Mundo Charro*.
+
+Te atiende el área de *Gestión de Tale...
+📩 [5217713900155]: 1
+📤 [Bot → 527713900155]: Para ayudarte mejor, elige una opción:
+
+1️⃣ 👤 Soy colaborador/a
+2️⃣ 🎓 Busco pr...
+📩 [5217713900155]: 3
+📤 [Bot → 527713900155]: ¡Genial! 🙌 Vamos a conocer tu perfil.
+
+¿Ya tienes alguna vacante en mente?
+
+1️⃣...
+📩 [5217713900155]: 2
+Error obteniendo vacantes de Sheets: Unable to parse range: Vacantes!A2:F100
+📤 [Bot → 527713900155]: 📋 *Vacantes disponibles en Mundo Charro:*
+
+1. *Gerente Comercial* — Ventas | Qu...
+¿Desea terminar el trabajo por lotes (S/N)?
+^C
+C:\Users\FranciscoPavana\OneDrive - Mundo Charro\Documentos\Proyecto Chatbot\mundocharro-bot\mundocharro-bot>npm start
+
+> mundocharro-bot@1.0.0 start
+> node src/index.js
+
+
+🤠 ========================================
+   MUNDO CHARRO - BOT DE RRHH
+   Servidor corriendo en puerto 3000
+   Webhook: http://localhost:3000/webhook
+   Plataforma: Meta WhatsApp Cloud API
+========================================
+
+📩 [5217713900155]: Hola
+📤 [Bot → 527713900155]: 👋 ¡Hola! Bienvenido/a a *Mundo Charro*.
+
+Te atiende el área de *Gestión de Tale...
+📩 [5217713900155]: 1
+📤 [Bot → 527713900155]: Para ayudarte mejor, elige una opción:
+
+1️⃣ 👤 Soy colaborador/a
+2️⃣ 🎓 Busco pr...
+📩 [5217713900155]: 3
+📤 [Bot → 527713900155]: ¡Genial! 🙌 Vamos a conocer tu perfil.
+
+¿Ya tienes alguna vacante en mente?
+
+1️⃣...
+📩 [5217713900155]: 2
+Error obteniendo vacantes de Sheets: Unable to parse range: Vacantes!A2:F100
+📤 [Bot → 527713900155]: 📋 *Vacantes disponibles en Mundo Charro:*
+
+1. *Gerente Comercial* — Ventas | Qu...
+¿Desea terminar el trabajo por lotes (S/N)?
+^C
+C:\Users\FranciscoPavana\OneDrive - Mundo Charro\Documentos\Proyecto Chatbot\mundocharro-bot\mundocharro-bot>npm start
+
+> mundocharro-bot@1.0.0 start
+> node src/index.js
+
+
+🤠 ========================================
+   MUNDO CHARRO - BOT DE RRHH
+   Servidor corriendo en puerto 3000
+   Webhook: http://localhost:3000/webhook
+   Plataforma: Meta WhatsApp Cloud API
+========================================
+
+📩 [5217713900155]: Hola
+📤 [Bot → 527713900155]: 👋 ¡Hola! Bienvenido/a a *Mundo Charro*.
+
+Te atiende el área de *Gestión de Tale...
+📩 [5217713900155]: 1
+📤 [Bot → 527713900155]: Para ayudarte mejor, elige una opción:
+
+1️⃣ 👤 Soy colaborador/a
+2️⃣ 🎓 Busco pr...
+📩 [5217713900155]: 3
+📤 [Bot → 527713900155]: ¡Genial! 🙌 Vamos a conocer tu perfil.
+
+¿Ya tienes alguna vacante en mente?
+
+1️⃣...
+📩 [5217713900155]: 2
+Error obteniendo vacantes de Sheets: Unable to parse range: 'Vacantes'!A2:F100
+📤 [Bot → 527713900155]: 📋 *Vacantes disponibles en Mundo Charro:*
+
+1. *Gerente Comercial* — Ventas | Qu...
+^C¿Desea terminar el trabajo por lotes (S/N)?
+^C
+C:\Users\FranciscoPavana\OneDrive - Mundo Charro\Documentos\Proyecto Chatbot\mundocharro-bot\mundocharro-bot>npm start
+
+> mundocharro-bot@1.0.0 start
+> node src/index.js
+
+
+🤠 ========================================
+   MUNDO CHARRO - BOT DE RRHH
+   Servidor corriendo en puerto 3000
+   Webhook: http://localhost:3000/webhook
+   Plataforma: Meta WhatsApp Cloud API
+========================================
+
+📩 [5217713900155]: Hola
+📤 [Bot → 527713900155]: 👋 ¡Hola! Bienvenido/a a *Mundo Charro*.
+
+Te atiende el área de *Gestión de Tale...
+📩 [5217713900155]: 1
+📤 [Bot → 527713900155]: Para ayudarte mejor, elige una opción:
+
+1️⃣ 👤 Soy colaborador/a
+2️⃣ 🎓 Busco pr...
+📩 [5217713900155]: 2
+📤 [Bot → 527713900155]: ¡Qué gusto que te intereses en nuestras prácticas! 🙌
+
+¿Qué deseas hacer?
+
+1️⃣  ...
+📩 [5217713900155]: 1
+📤 [Bot → 527713900155]: 📋 *Información sobre Prácticas Profesionales en Mundo Charro*
+
+• Duración: 6 me...
+📩 [5217713900155]: Hola
+📤 [Bot → 527713900155]: 👋 ¡Hola! Bienvenido/a a *Mundo Charro*.
+
+Te atiende el área de *Gestión de Tale...
+📩 [5217713900155]: 1
+📤 [Bot → 527713900155]: Para ayudarte mejor, elige una opción:
+
+1️⃣ 👤 Soy colaborador/a
+2️⃣ 🎓 Busco pr...
+📩 [5217713900155]: 3
+📤 [Bot → 527713900155]: ¡Genial! 🙌 Vamos a conocer tu perfil.
+
+¿Ya tienes alguna vacante en mente?
+
+1️⃣...
+📩 [5217713900155]: 2
+📤 [Bot → 527713900155]: 📋 *Vacantes disponibles en Mundo Charro:*
+
+1. *Gerente de Finanzas* — Finanzas ...
+📩 [5217713900155]: 10
+📤 [Bot → 527713900155]: ✅ ¡Excelente elección!
+
+*Gerencia Creativa* — Marketing | Singuilucan, Hidalgo. ...
+📩 [5217713900155]: Francisco Pavana
+📤 [Bot → 527713900155]: 👤 Mucho gusto, *Francisco Pavana*!
+
+*¿Cuál es tu correo electrónico?*...
+📩 [5217713900155]: franpavdlr@gmail.com
+📤 [Bot → 527713900155]: 📧 ¡Gracias!
+
+*¿En qué horario podemos contactarte?*
+
+1️⃣ 🌅 Mañana
+2️⃣ 🌞 Tarde...
+📩 [5217713900155]: 4
+
+📋 NUEVO CANDIDATO REGISTRADO:
+   Nombre: Francisco Pavana
+   Email: franpavdlr@gmail.com
+   Horario: 🕒 Cualquier horario
+   Vacante: Gerencia Creativa
+   Teléfono: 5217713900155
+
+📤 [Bot → 527713900155]: 👍 ¡Gracias *Francisco Pavana*!
+
+Estamos revisando tu información...
+
+_📌 Te con...
+¿Desea terminar el trabajo por lotes (S/N)?
+^C
+C:\Users\FranciscoPavana\OneDrive - Mundo Charro\Documentos\Proyecto Chatbot\mundocharro-bot\mundocharro-bot>npm start
+
+> mundocharro-bot@1.0.0 start
+> node src/index.js
+
+
+🤠 ========================================
+   MUNDO CHARRO - BOT DE RRHH
+   Servidor corriendo en puerto 3000
+   Webhook: http://localhost:3000/webhook
+   Plataforma: Meta WhatsApp Cloud API
+========================================
+
+📩 [5217713900155]: Hola
+📤 [Bot → 527713900155]: 👋 ¡Hola! Bienvenido/a a *Mundo Charro*.
+
+Te atiende el área de *Gestión de Tale...
+📩 [5217713900155]: 1
+📤 [Bot → 527713900155]: Para ayudarte mejor, elige una opción:
+
+1️⃣ 👤 Soy colaborador/a
+2️⃣ 🎓 Busco pr...
+📩 [5217713900155]: 3
+📤 [Bot → 527713900155]: ¡Genial! 🙌 Vamos a conocer tu perfil.
+
+¿Ya tienes alguna vacante en mente?
+
+1️⃣...
+📩 [5217713900155]: 2
+📤 [Bot → 527713900155]: 📋 *Vacantes disponibles en Mundo Charro:*
+
+1. *Gerente de Finanzas* — Finanzas ...
+📩 [5217713900155]: 11
+📤 [Bot → 527713900155]: ✅ ¡Excelente elección!
+
+*Jefatura de Trade Marketing* — Marketing | Singuilucan,...
+📩 [5217713900155]: Francisco Pavana
+📤 [Bot → 527713900155]: 👤 Mucho gusto, *Francisco Pavana*!
+
+*¿Cuál es tu correo electrónico?*...
+📩 [5217713900155]: franpavdlr@gmail.com
+📤 [Bot → 527713900155]: 📧 ¡Gracias!
+
+*¿En qué horario podemos contactarte?*
+
+1️⃣ 🌅 Mañana
+2️⃣ 🌞 Tarde...
+📩 [5217713900155]: 4
+
+📋 NUEVO CANDIDATO REGISTRADO:
+   Nombre: Francisco Pavana
+   Email: franpavdlr@gmail.com
+   Horario: 🕒 Cualquier horario
+   Vacante: Jefatura de Trade Marketing
+   Teléfono: 5217713900155
+
+📤 [Bot → 527713900155]: 👍 ¡Gracias *Francisco Pavana*!
+
+Estamos revisando tu información...
+
+_📌 Te con...
+📩 [5217713900155]: Hola
+📤 [Bot → 527713900155]: 👋 ¡Hola! Bienvenido/a a *Mundo Charro*.
+
+Te atiende el área de *Gestión de Tale...
+📩 [5217713900155]: 1
+📤 [Bot → 527713900155]: Para ayudarte mejor, elige una opción:
+
+1️⃣ 👤 Soy colaborador/a
+2️⃣ 🎓 Busco pr...
+📩 [5217713900155]: 4¡
+📤 [Bot → 527713900155]: ❌ No entendí tu respuesta. Por favor elige una opción válida escribiendo el núme...
+📩 [5217713900155]: 4i
+📤 [Bot → 527713900155]: ❌ No entendí tu respuesta. Por favor elige una opción válida escribiendo el núme...
+📩 [5217713900155]: 4
+📤 [Bot → 527713900155]: ℹ️ *Información General de Mundo Charro*
+
+Somos una empresa dedicada a la cultur...
+📩 [5217713900155]: Hola
+📤 [Bot → 527713900155]: 👋 ¡Hola! Bienvenido/a a *Mundo Charro*.
+
+Te atiende el área de *Gestión de Tale...
+📩 [5217713900155]: 1
+📤 [Bot → 527713900155]: Para ayudarte mejor, elige una opción:
+
+1️⃣ 👤 Soy colaborador/a
+2️⃣ 🎓 Busco pr...
+📩 [5217713900155]: 2
+📤 [Bot → 527713900155]: ¡Qué gusto que te intereses en nuestras prácticas! 🙌
+
+¿Qué deseas hacer?
+
+1️⃣  ...
+📩 [5217713900155]: 2
+📤 [Bot → 527713900155]: ✅ Listo, hemos registrado tu interés en prácticas profesionales.
+
+El equipo de *...
+📩 [5217713900155]: Hola
+📤 [Bot → 527713900155]: 👋 ¡Hola! Bienvenido/a a *Mundo Charro*.
+
+Te atiende el área de *Gestión de Tale...
+📩 [5217713900155]: 1
+📤 [Bot → 527713900155]: Para ayudarte mejor, elige una opción:
+
+1️⃣ 👤 Soy colaborador/a
+2️⃣ 🎓 Busco pr...
+📩 [5217713900155]: 1
+📤 [Bot → 527713900155]: ¡Hola! Te ayudamos con temas internos 👍
+
+👉 Te canalizamos con el área correspo...
+📩 [5217713900155]: Contactar
+📤 [Bot → 527713900155]: 🙌 *¡Gracias por tu tiempo!*
+
+Si tienes dudas, puedes escribirnos aquí.
+
+¡Te des...
+📩 [5217713900155]: Cómo están necesito para un taco
+📤 [Bot → 527713900155]: Para ayudarte mejor, elige una opción:
+
+1️⃣ 👤 Soy colaborador/a
+2️⃣ 🎓 Busco pr...
+📩 [5217713900155]: 1
+📤 [Bot → 527713900155]: ¡Hola! Te ayudamos con temas internos 👍
+
+👉 Te canalizamos con el área correspo...
+📩 [5217713900155]: Contactar
+📤 [Bot → 527713900155]: 🙌 *¡Gracias por tu tiempo!*
+
+Si tienes dudas, puedes escribirnos aquí.
+
+¡Te des...
+📩 [5215610108459]: Hola
+❌ Error en webhook: {
+  error: {
+    message: '(#131030) Recipient phone number not in allowed list',
+    type: 'OAuthException',
+    code: 131030,
+    error_data: {
+      messaging_product: 'whatsapp',
+      details: 'El número de teléfono del destinatario no está en la lista de autorizados: Agrega el número de teléfono del destinatario a la lista de destinatarios y vuelve a intentarlo.'
+    },
+    fbtrace_id: 'ArkuiobG6IkKUBRlCMEgscN'
+  }
+}
+📩 [5215610108459]: hola
+📤 [Bot → 525610108459]: 👋 ¡Hola! Bienvenido/a a *Mundo Charro*.
+
+Te atiende el área de *Gestión de Tale...
+📩 [5215610108459]: 1
+📤 [Bot → 525610108459]: Para ayudarte mejor, elige una opción:
+
+1️⃣ 👤 Soy colaborador/a
+2️⃣ 🎓 Busco pr...
+📩 [5215610108459]: 3
+📤 [Bot → 525610108459]: ¡Genial! 🙌 Vamos a conocer tu perfil.
+
+¿Ya tienes alguna vacante en mente?
+
+1️⃣...
+📩 [5215610108459]: 2
+📤 [Bot → 525610108459]: 📋 *Vacantes disponibles en Mundo Charro:*
+
+1. *Gerente de Finanzas* — Finanzas ...
+📩 [5217713900155]: Hola
+📤 [Bot → 527713900155]: 👋 ¡Hola! Bienvenido/a a *Mundo Charro*.
+
+Te atiende el área de *Gestión de Tale...
+📩 [5215610108459]: 4
+📤 [Bot → 525610108459]: ✅ ¡Excelente elección!
+
+*Auxiliar de limpieza* — Mantenimiento e intendencia | S...
+📩 [5213311436439]: Hola
+📤 [Bot → 523311436439]: 👋 ¡Hola! Bienvenido/a a *Mundo Charro*.
+
+Te atiende el área de *Gestión de Tale...
+📩 [5213311436439]: 1
+📤 [Bot → 523311436439]: Para ayudarte mejor, elige una opción:
+
+1️⃣ 👤 Soy colaborador/a
+2️⃣ 🎓 Busco pr...
+📩 [5213311436439]: 2
+📤 [Bot → 523311436439]: ¡Qué gusto que te intereses en nuestras prácticas! 🙌
+
+¿Qué deseas hacer?
+
+1️⃣  ...
+📩 [5213311436439]: 2
+📤 [Bot → 523311436439]: ✅ Listo, hemos registrado tu interés en prácticas profesionales.
+
+El equipo de *...
+📩 [5213311436439]: Hola
+📤 [Bot → 523311436439]: 👋 ¡Hola! Bienvenido/a a *Mundo Charro*.
+
+Te atiende el área de *Gestión de Tale...
+📩 [5213311436439]: 1
+📤 [Bot → 523311436439]: Para ayudarte mejor, elige una opción:
+
+1️⃣ 👤 Soy colaborador/a
+2️⃣ 🎓 Busco pr...
+📩 [5213311436439]: 1
+📤 [Bot → 523311436439]: ¡Hola! Te ayudamos con temas internos 👍
+
+👉 Te canalizamos con el área correspo...
+📩 [5213311436439]: Contactar
+📤 [Bot → 523311436439]: 🙌 *¡Gracias por tu tiempo!*
+
+Si tienes dudas, puedes escribirnos aquí.
+
+¡Te des...
+📩 [5213311436439]: Hola
+📤 [Bot → 523311436439]: 👋 ¡Hola! Bienvenido/a a *Mundo Charro*.
+
+Te atiende el área de *Gestión de Tale...
+📩 [5213311436439]: 1
+📤 [Bot → 523311436439]: Para ayudarte mejor, elige una opción:
+
+1️⃣ 👤 Soy colaborador/a
+2️⃣ 🎓 Busco pr...
+📩 [5213311436439]: 3
+📤 [Bot → 523311436439]: ¡Genial! 🙌 Vamos a conocer tu perfil.
+
+¿Ya tienes alguna vacante en mente?
+
+1️⃣...
+📩 [5213311436439]: 2
+📤 [Bot → 523311436439]: 📋 *Vacantes disponibles en Mundo Charro:*
+
+1. *Gerente de Finanzas* — Finanzas ...
+📩 [5213311436439]: 0
+📤 [Bot → 523311436439]: ¡Podemos guardar tu perfil en nuestra *Cartera de Talento*! 🌟
+
+Cuando tengamos ...
+📩 [5213311436439]: 1
+📤 [Bot → 523311436439]: ¡Perfecto! Empecemos 📋
+
+*¿Cuál es tu nombre completo?*...
+📩 [5213311436439]: Federico romano peluche
+📤 [Bot → 523311436439]: 👤 Mucho gusto, *Federico romano peluche*!
+
+*¿Cuál es tu correo electrónico?*...
+📩 [5213311436439]: Peluche87@cruzazul.mx
+📤 [Bot → 523311436439]: 📧 ¡Gracias!
+
+*¿En qué horario podemos contactarte?*
+
+1️⃣ 🌅 Mañana
+2️⃣ 🌞 Tarde...
+📩 [5213311436439]: 4
+
+📋 NUEVO CANDIDATO REGISTRADO:
+   Nombre: Federico romano peluche
+   Email: Peluche87@cruzazul.mx
+   Horario: 🕒 Cualquier horario
+   Vacante: Cartera de talento
+   Teléfono: 5213311436439
+
+📤 [Bot → 523311436439]: 👍 ¡Gracias *Federico romano peluche*!
+
+Estamos revisando tu información...
+
+_📌...
+📩 [5213311436439]: Hola
+❌ Error en webhook: {
+  error: {
+    message: 'Error validating access token: Session has expired on Monday, 13-Apr-26 18:00:00 PDT. The current time is Tuesday, 14-Apr-26 09:42:05 PDT.',
+    type: 'OAuthException',
+    code: 190,
+    error_subcode: 463,
+    fbtrace_id: 'AurIfUi-gOzrcgpPbgzsBqM'
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
