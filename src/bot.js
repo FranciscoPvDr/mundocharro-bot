@@ -6,6 +6,7 @@
 const crypto = require("crypto");
 const { ESTADOS, MODO, obtenerSesion, actualizarSesion } = require("./sesiones");
 const { obtenerVacantes, buscarVacante, formatearListaVacantes } = require("./vacantes");
+const { crearLeadOdoo } = require("./odoo");
 
 // ─── MENSAJES ──────────────────────────────────────────────────────
 const MSG = {
@@ -157,7 +158,7 @@ function generarCasoId() {
   return String(crypto.randomInt(100_000_000, 1_000_000_000));
 }
 
-function registrarHandoffHumano(telefono, sesion, area) {
+async function registrarHandoffHumano(telefono, sesion, area) {
   const casoId = generarCasoId();
   const datos = {
     ...sesion.datos,
@@ -165,6 +166,12 @@ function registrarHandoffHumano(telefono, sesion, area) {
     casoArea: area,
     casoAbiertoEn: new Date().toISOString(),
   };
+
+  // Crear lead en Odoo (asíncrono, no bloquea la respuesta al usuario)
+  // Se ejecuta en background para no retrasar la respuesta del chatbot
+  crearLeadOdoo(datos).catch(err => {
+    console.error(`❌ Error al crear lead en Odoo para caso ${casoId}:`, err.message);
+  });
 
   console.log(`\n🧑‍💼 HANDOFF A HUMANO:`);
   console.log(`   Caso: ${casoId}`);
@@ -224,7 +231,7 @@ async function procesarMensaje(telefono, mensaje) {
     // ─── COLABORADOR ───────────────────────────────────────────────
     case ESTADOS.COLABORADOR_ESPERA_CONTACTO:
       if (texto === "contactar") {
-        const datos = registrarHandoffHumano(telefono, sesion, "Atención GT");
+        const datos = await registrarHandoffHumano(telefono, sesion, "Atención GT");
         actualizarSesion(telefono, { modo: MODO.HUMANO, estado: ESTADOS.FIN, datos });
         return MSG.handoffHumano(datos.casoId);
       }
@@ -248,7 +255,7 @@ async function procesarMensaje(telefono, mensaje) {
 
     case ESTADOS.PRACTICAS_INFO:
       if (texto === "contactar") {
-        const datos = registrarHandoffHumano(telefono, sesion, "Vinculación");
+        const datos = await registrarHandoffHumano(telefono, sesion, "Vinculación");
         actualizarSesion(telefono, { modo: MODO.HUMANO, estado: ESTADOS.FIN, datos });
         return MSG.handoffHumano(datos.casoId);
       }
