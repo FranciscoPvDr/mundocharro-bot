@@ -19,12 +19,18 @@ const axios = require("axios");
 async function crearLeadOdoo(datos) {
   const WORKER_URL = process.env.CLOUDFLARE_WORKER_URL;
 
+  console.log(`🔍 DEBUG - WORKER_URL: "${WORKER_URL}"`);
+  console.log(`🔍 DEBUG - Todas las env vars: ${JSON.stringify(Object.keys(process.env).filter(k => k.includes('CLOUDFLARE') || k.includes('META')).reduce((obj, key) => { obj[key] = process.env[key]; return obj; }, {}))}`);
+
   if (!WORKER_URL) {
     console.error("❌ FALTA CLOUDFLARE_WORKER_URL en variables de entorno");
     return null;
   }
 
   try {
+    console.log(`📡 Enviando POST a: ${WORKER_URL}`);
+    console.log(`📦 Datos: ${JSON.stringify(datos)}`);
+    
     const response = await axios.post(WORKER_URL, {
       tipo: "crear_lead_chatbot",
       casoId: datos.casoId,
@@ -48,7 +54,15 @@ async function crearLeadOdoo(datos) {
 
     return resultado;
   } catch (error) {
-    console.error(`❌ Error de conexión con worker:`, error.message);
+    console.error(`❌ Error de conexión con worker:`);
+    console.error(`   URL: ${WORKER_URL}`);
+    console.error(`   Error: ${error.message}`);
+    if (error.response) {
+      console.error(`   Status: ${error.response.status}`);
+      console.error(`   Data: ${JSON.stringify(error.response.data)}`);
+    } else if (error.request) {
+      console.error(`   Request: ${JSON.stringify(error.request)}`);
+    }
     return null;
   }
 }
