@@ -76,7 +76,7 @@ Somos un destino único donde la cultura, las tradiciones y el entretenimiento m
 
 🌐 Sitio web: www.mundocharro.com
 📧 Contacto: rrhh@mundocharro.com
-📍 Ubicación: Singuilucan,Hidalgo,México.
+📍 Ubicación: Singuilucan, Hidalgo, México.
 
 Si tienes alguna duda o quieres conocer más sobre esta experiencia auténticamente mexicana, escríbenos… será un gusto atenderte como se recibe a los buenos invitados: con calidez y respeto.
 
@@ -145,11 +145,24 @@ Si tienes dudas, puedes escribirnos aquí.
 
 ¡Te deseamos mucho éxito! 🤠`,
 
-  handoffHumano: (casoId) => `✅ Entendido. Pronto se unirá alguien del equipo a esta conversación.
+  handoffHumano: (casoId, area) => `✅ Entendido. Pronto se unirá alguien del equipo de *${area}* a esta conversación.
 
 🧾 *Número de caso:* ${casoId}
 
-Mientras tanto, puedes escribir aquí los detalles. Si necesitas volver al menú automático, escribe *Hola*.`,
+Mientras tanto, puedes escribir aquí los detalles de tu solicitud.
+
+_Si necesitas volver al menú automático, escribe *Hola*._`,
+
+  agentesOcupados: `⏳ En este momento nuestros agentes están atendiendo otras conversaciones.
+
+Tu caso ha sido registrado y nos pondremos en contacto contigo a la brevedad posible:
+
+📧 Por correo electrónico
+📱 Por este mismo WhatsApp
+
+¡Gracias por tu paciencia! 🤠
+
+_Si necesitas volver al menú automático, escribe *Hola*._`,
 
   errorOpcion: `❌ No entendí tu respuesta. Por favor elige una opción válida escribiendo el número correspondiente.`,
 };
@@ -167,9 +180,14 @@ async function registrarHandoffHumano(telefono, sesion, area) {
     casoAbiertoEn: new Date().toISOString(),
   };
 
-  // Crear lead en Odoo (asíncrono, no bloquea la respuesta al usuario)
-  // Se ejecuta en background para no retrasar la respuesta del chatbot
-  crearLeadOdoo(datos).catch(err => {
+  // Crear lead en Odoo en background (no bloquea la respuesta al usuario)
+  crearLeadOdoo(datos).then(resultado => {
+    if (resultado?.ok) {
+      console.log(`✅ Lead creado en Odoo | Caso: ${casoId} | Área: ${area} | Lead ID: ${resultado.lead_id}`);
+    } else {
+      console.warn(`⚠️ Lead no creado en Odoo | Caso: ${casoId} | Error: ${resultado?.error}`);
+    }
+  }).catch(err => {
     console.error(`❌ Error al crear lead en Odoo para caso ${casoId}:`, err.message);
   });
 
@@ -194,8 +212,15 @@ async function procesarMensaje(telefono, mensaje) {
     return MSG.bienvenida;
   }
 
-  // Durante soporte humano, el bot no interviene (misma conversación; responde el humano desde la línea oficial)
+  // Durante soporte humano el bot no interviene,
+  // pero si el usuario lleva más de 30 minutos sin respuesta humana, avisa
   if (sesion.modo === MODO.HUMANO) {
+    const abierto = sesion.datos?.casoAbiertoEn ? new Date(sesion.datos.casoAbiertoEn) : null;
+    const minutosEspera = abierto ? (Date.now() - abierto.getTime()) / 60000 : 0;
+
+    if (minutosEspera > 30) {
+      return MSG.agentesOcupados;
+    }
     return null;
   }
 
@@ -233,7 +258,7 @@ async function procesarMensaje(telefono, mensaje) {
       if (texto === "contactar") {
         const datos = await registrarHandoffHumano(telefono, sesion, "Atención GT");
         actualizarSesion(telefono, { modo: MODO.HUMANO, estado: ESTADOS.FIN, datos });
-        return MSG.handoffHumano(datos.casoId);
+        return MSG.handoffHumano(datos.casoId, "Atención GT");
       }
       return (
         `Para canalizarte con un agente, escribe la palabra *contactar*.\n\n` +
@@ -246,9 +271,12 @@ async function procesarMensaje(telefono, mensaje) {
         case "1":
           actualizarSesion(telefono, { estado: ESTADOS.PRACTICAS_INFO });
           return MSG.practicasInfo;
-        case "2":
-          actualizarSesion(telefono, { estado: ESTADOS.FIN });
-          return MSG.practicasContacto;
+        case "2": {
+          // ✅ FIX: ahora sí crea el lead y el handoff para Vinculación
+          const datos = await registrarHandoffHumano(telefono, sesion, "Vinculación");
+          actualizarSesion(telefono, { modo: MODO.HUMANO, estado: ESTADOS.FIN, datos });
+          return MSG.handoffHumano(datos.casoId, "Vinculación");
+        }
         default:
           return MSG.errorOpcion + "\n\n" + MSG.practicasMenu;
       }
@@ -257,7 +285,7 @@ async function procesarMensaje(telefono, mensaje) {
       if (texto === "contactar") {
         const datos = await registrarHandoffHumano(telefono, sesion, "Vinculación");
         actualizarSesion(telefono, { modo: MODO.HUMANO, estado: ESTADOS.FIN, datos });
-        return MSG.handoffHumano(datos.casoId);
+        return MSG.handoffHumano(datos.casoId, "Vinculación");
       }
       return `Si quieres que te contacte *Vinculación*, escribe *contactar*.\n\nSi quieres reiniciar, escribe *Hola*.`;
 
@@ -272,7 +300,6 @@ async function procesarMensaje(telefono, mensaje) {
         actualizarSesion(telefono, { estado: ESTADOS.RECLUTAMIENTO_TIENE_VACANTE });
         return MSG.pedirVacante;
       } else if (texto === "2") {
-        // Mostrar todas las vacantes disponibles
         const vacantes = await obtenerVacantes();
         const lista = formatearListaVacantes(vacantes);
         if (lista) {
@@ -340,7 +367,6 @@ async function procesarMensaje(telefono, mensaje) {
       const datosFinal = { ...sesion.datos, horario };
       actualizarSesion(telefono, { estado: ESTADOS.FIN, datos: datosFinal });
 
-      // Log para RRHH
       console.log(`\n📋 NUEVO CANDIDATO REGISTRADO:`);
       console.log(`   Nombre: ${datosFinal.nombre}`);
       console.log(`   Email: ${datosFinal.email}`);
