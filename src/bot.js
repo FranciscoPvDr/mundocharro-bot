@@ -1,6 +1,6 @@
 // =============================================
 //   Lógica principal del chatbot Mundo Charro
-//   Flujo actualizado por RRHH v2
+//   Flujo actualizado por RRHH v3 - Prácticas mejoradas
 // =============================================
 
 const crypto = require("crypto");
@@ -33,12 +33,13 @@ Responde con el número de tu opción.`,
 
 Escribe *contactar* para que un agente de *Atención GT* se comunique contigo, o escribe *Hola* para volver al inicio.`,
 
+  // ─── PRÁCTICAS ───────────────────────────────────────────
   practicasMenu: `¡Qué gusto que te intereses en nuestras prácticas! 🙌
 
 ¿Qué deseas hacer?
 
 1️⃣ 📋 Ver información sobre prácticas
-2️⃣ 💬 Contactar al área de Vinculación
+2️⃣ 🎓 Quiero hacer mis prácticas aquí
 
 Responde con el número de tu opción.`,
 
@@ -50,18 +51,61 @@ Responde con el número de tu opción.`,
 • Apoyo económico: A convenir
 • Requisitos: Ser estudiante activo con carta de presentación institucional
 
-Para más información o para iniciar tu proceso, escribe *contactar* y nuestro equipo de *Vinculación* se pondrá en contacto contigo.
+Para iniciar tu proceso escribe *registrar*, o escribe *Hola* para volver al inicio.`,
 
-Escribe *Hola* para volver al inicio.`,
+  practicasPedirNombre: `¡Perfecto! 🎓 Vamos a registrar tu perfil.
 
-  practicasContacto: `✅ Listo, hemos registrado tu interés en prácticas profesionales.
+*¿Cuál es tu nombre completo?*`,
 
-El equipo de *Vinculación* se pondrá en contacto contigo pronto. 📬
+  practicasPedirEmail: (nombre) => `👤 Mucho gusto, *${nombre}*!
 
-¡Mucho éxito! 🌟
+*¿Cuál es tu correo electrónico?*`,
 
-Escribe *Hola* para volver al inicio.`,
+  practicasPedirUniversidad: `📧 ¡Gracias!
 
+*¿En qué universidad o institución estudias?*`,
+
+  practicasPedirCarrera: `🏫 ¡Anotado!
+
+*¿Qué carrera estudias?*`,
+
+  practicasPedirArea: `📚 ¡Excelente!
+
+*¿En qué área te gustaría realizar tus prácticas?*
+
+1️⃣ 💼 Ventas
+2️⃣ 🗂️ Administración
+3️⃣ 💻 TI
+4️⃣ 👥 RRHH
+
+Responde con el número de tu opción.`,
+
+  practicasPedirCarta: `¿Cuentas con *carta de presentación* de tu institución?
+
+1️⃣ ✅ Sí, ya la tengo
+2️⃣ 🔄 Aún no, pero la estoy tramitando
+3️⃣ ❌ No la tengo aún`,
+
+  practicasRegistrado: (nombre) => `✅ *¡Gracias ${nombre}!*
+
+Tu perfil ha sido registrado exitosamente. 🎉
+
+El equipo de *Vinculación* revisará tu información y se pondrá en contacto contigo pronto. 📬
+
+---
+
+¿Te gustaría hablar ahora con alguien del área de *Vinculación*?
+
+1️⃣ 💬 Sí, quiero hablar con alguien
+2️⃣ 👍 No, está bien así`,
+
+  practicasCierre: `🌟 ¡Perfecto! Estaremos en contacto muy pronto.
+
+¡Mucho éxito en tu proceso! 🤠
+
+Escribe *Hola* si necesitas algo más.`,
+
+  // ─── RECLUTAMIENTO ───────────────────────────────────────
   reclutamientoInicio: `¡Genial! 🙌 Vamos a conocer tu perfil.
 
 ¿Ya tienes alguna vacante en mente?
@@ -180,7 +224,6 @@ async function registrarHandoffHumano(telefono, sesion, area) {
     casoAbiertoEn: new Date().toISOString(),
   };
 
-  // Crear lead en Odoo en background (no bloquea la respuesta al usuario)
   crearLeadOdoo(datos).then(resultado => {
     if (resultado?.ok) {
       console.log(`✅ Lead creado en Odoo | Caso: ${casoId} | Área: ${area} | Lead ID: ${resultado.lead_id}`);
@@ -200,6 +243,37 @@ async function registrarHandoffHumano(telefono, sesion, area) {
   return datos;
 }
 
+async function registrarLeadPracticas(telefono, sesion) {
+  const casoId = generarCasoId();
+  const datos = {
+    ...sesion.datos,
+    casoId,
+    casoArea: "Vinculación",
+    casoAbiertoEn: new Date().toISOString(),
+  };
+
+  crearLeadOdoo(datos).then(resultado => {
+    if (resultado?.ok) {
+      console.log(`✅ Lead prácticas creado en Odoo | Caso: ${casoId} | Lead ID: ${resultado.lead_id}`);
+    } else {
+      console.warn(`⚠️ Lead prácticas no creado | Caso: ${casoId} | Error: ${resultado?.error}`);
+    }
+  }).catch(err => {
+    console.error(`❌ Error al crear lead de prácticas para caso ${casoId}:`, err.message);
+  });
+
+  console.log(`\n🎓 NUEVO PRACTICANTE REGISTRADO:`);
+  console.log(`   Caso: ${casoId}`);
+  console.log(`   Nombre: ${datos.nombre}`);
+  console.log(`   Universidad: ${datos.universidad}`);
+  console.log(`   Carrera: ${datos.carrera}`);
+  console.log(`   Área: ${datos.areaInteres}`);
+  console.log(`   Carta: ${datos.cartaPresentacion}`);
+  console.log(`   Teléfono: ${telefono}\n`);
+
+  return datos;
+}
+
 // ─── PROCESADOR PRINCIPAL ──────────────────────────────────────────
 async function procesarMensaje(telefono, mensaje) {
   const sesion = obtenerSesion(telefono);
@@ -213,11 +287,10 @@ async function procesarMensaje(telefono, mensaje) {
   }
 
   // Durante soporte humano el bot no interviene,
-  // pero si el usuario lleva más de 30 minutos sin respuesta humana, avisa
+  // pero si llevan más de 30 minutos sin respuesta, avisa
   if (sesion.modo === MODO.HUMANO) {
     const abierto = sesion.datos?.casoAbiertoEn ? new Date(sesion.datos.casoAbiertoEn) : null;
     const minutosEspera = abierto ? (Date.now() - abierto.getTime()) / 60000 : 0;
-
     if (minutosEspera > 30) {
       return MSG.agentesOcupados;
     }
@@ -265,29 +338,100 @@ async function procesarMensaje(telefono, mensaje) {
         `Si quieres reiniciar, escribe *Hola*.`
       );
 
-    // ─── PRÁCTICAS ─────────────────────────────────────────────────
+    // ─── PRÁCTICAS: MENÚ ───────────────────────────────────────────
     case ESTADOS.PRACTICAS_MENU:
       switch (texto) {
         case "1":
           actualizarSesion(telefono, { estado: ESTADOS.PRACTICAS_INFO });
           return MSG.practicasInfo;
-        case "2": {
-          // ✅ FIX: ahora sí crea el lead y el handoff para Vinculación
-          const datos = await registrarHandoffHumano(telefono, sesion, "Vinculación");
-          actualizarSesion(telefono, { modo: MODO.HUMANO, estado: ESTADOS.FIN, datos });
-          return MSG.handoffHumano(datos.casoId, "Vinculación");
-        }
+        case "2":
+          actualizarSesion(telefono, { estado: ESTADOS.PRACTICAS_NOMBRE });
+          return MSG.practicasPedirNombre;
         default:
           return MSG.errorOpcion + "\n\n" + MSG.practicasMenu;
       }
 
+    // ─── PRÁCTICAS: INFO ───────────────────────────────────────────
     case ESTADOS.PRACTICAS_INFO:
-      if (texto === "contactar") {
+      if (texto === "registrar" || texto === "contactar") {
+        actualizarSesion(telefono, { estado: ESTADOS.PRACTICAS_NOMBRE });
+        return MSG.practicasPedirNombre;
+      }
+      return `Para iniciar tu registro escribe *registrar*.\n\nSi quieres reiniciar, escribe *Hola*.`;
+
+    // ─── PRÁCTICAS: RECOLECCIÓN DE DATOS ──────────────────────────
+    case ESTADOS.PRACTICAS_NOMBRE:
+      actualizarSesion(telefono, {
+        estado: ESTADOS.PRACTICAS_EMAIL,
+        datos: { ...sesion.datos, nombre: textoOriginal }
+      });
+      return MSG.practicasPedirEmail(textoOriginal);
+
+    case ESTADOS.PRACTICAS_EMAIL:
+      actualizarSesion(telefono, {
+        estado: ESTADOS.PRACTICAS_UNIVERSIDAD,
+        datos: { ...sesion.datos, email: textoOriginal }
+      });
+      return MSG.practicasPedirUniversidad;
+
+    case ESTADOS.PRACTICAS_UNIVERSIDAD:
+      actualizarSesion(telefono, {
+        estado: ESTADOS.PRACTICAS_CARRERA,
+        datos: { ...sesion.datos, universidad: textoOriginal }
+      });
+      return MSG.practicasPedirCarrera;
+
+    case ESTADOS.PRACTICAS_CARRERA:
+      actualizarSesion(telefono, {
+        estado: ESTADOS.PRACTICAS_AREA,
+        datos: { ...sesion.datos, carrera: textoOriginal }
+      });
+      return MSG.practicasPedirArea;
+
+    case ESTADOS.PRACTICAS_AREA: {
+      const areas = { "1": "Ventas", "2": "Administración", "3": "TI", "4": "RRHH" };
+      const areaInteres = areas[texto];
+      if (!areaInteres) return MSG.errorOpcion + "\n\n" + MSG.practicasPedirArea;
+      actualizarSesion(telefono, {
+        estado: ESTADOS.PRACTICAS_CARTA,
+        datos: { ...sesion.datos, areaInteres }
+      });
+      return MSG.practicasPedirCarta;
+    }
+
+    case ESTADOS.PRACTICAS_CARTA: {
+      const cartas = {
+        "1": "✅ Sí la tiene",
+        "2": "🔄 En trámite",
+        "3": "❌ No la tiene aún"
+      };
+      const cartaPresentacion = cartas[texto];
+      if (!cartaPresentacion) return MSG.errorOpcion + "\n\n" + MSG.practicasPedirCarta;
+
+      const datosActualizados = { ...sesion.datos, cartaPresentacion };
+      actualizarSesion(telefono, {
+        estado: ESTADOS.PRACTICAS_CONFIRMACION,
+        datos: datosActualizados
+      });
+
+      // Crear lead en Odoo con todos los datos
+      const sesionActualizada = { ...sesion, datos: datosActualizados };
+      await registrarLeadPracticas(telefono, sesionActualizada);
+
+      return MSG.practicasRegistrado(datosActualizados.nombre);
+    }
+
+    // ─── PRÁCTICAS: ¿QUIERE HABLAR CON ALGUIEN? ───────────────────
+    case ESTADOS.PRACTICAS_CONFIRMACION:
+      if (texto === "1") {
         const datos = await registrarHandoffHumano(telefono, sesion, "Vinculación");
         actualizarSesion(telefono, { modo: MODO.HUMANO, estado: ESTADOS.FIN, datos });
         return MSG.handoffHumano(datos.casoId, "Vinculación");
+      } else if (texto === "2") {
+        actualizarSesion(telefono, { estado: ESTADOS.FIN });
+        return MSG.practicasCierre;
       }
-      return `Si quieres que te contacte *Vinculación*, escribe *contactar*.\n\nSi quieres reiniciar, escribe *Hola*.`;
+      return MSG.errorOpcion + "\n\n" + MSG.practicasRegistrado(sesion.datos.nombre);
 
     // ─── SOLO INFO ─────────────────────────────────────────────────
     case ESTADOS.SOLO_INFO:
@@ -352,7 +496,7 @@ async function procesarMensaje(telefono, mensaje) {
       }
       return MSG.errorOpcion + "\n\n" + MSG.invitarCartera;
 
-    // ─── RECOLECCIÓN DE DATOS ──────────────────────────────────────
+    // ─── RECOLECCIÓN DE DATOS (RECLUTAMIENTO) ─────────────────────
     case ESTADOS.DATOS_NOMBRE:
       actualizarSesion(telefono, { estado: ESTADOS.DATOS_EMAIL, datos: { ...sesion.datos, nombre: textoOriginal } });
       return MSG.pedirEmail(textoOriginal);
